@@ -44,4 +44,33 @@ class Model {
     func getMessages(forContact: String) -> [Message] {
         return threads[forContact] ?? []
     }
+
+    // RMV
+    static func sampleData() -> Model {
+        let model = Model()
+        model.addContact(newContact: "Tester")
+        model.addMessage(Message(
+            from: "Tester",
+            to: ME,
+            text: "Hello",
+            sent_at: Date(timeIntervalSince1970: 0)
+        ))
+        model.addMessage(Message(
+            from: ME,
+            to: "Tester",
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque finibus, metus id blandit tincidunt, ligula dolor convallis purus, eget efficitur arcu lectus non risus. Nunc dictum massa vel quam aliquet tincidunt.",
+            sent_at: Date(timeIntervalSince1970: 1)
+        ))
+        return model
+    }
+
+    // RMV
+    func sendMessage(to contact: String, text: String) {
+        addMessage(Message(
+            from: ME,
+            to: contact,
+            text: text,
+            sent_at: Date()
+        ))
+    }
 }

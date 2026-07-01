@@ -15,24 +15,10 @@ class ContactsVC: UIViewController, ModelDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        model = Model()
+        model = Model.sampleData()
         model.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-
-        model.addContact(newContact: "Tester")
-        model.addMessage(Message(
-            from: "Tester",
-            to: ME,
-            text: "Hello",
-            sent_at: Date(timeIntervalSince1970: 0)
-        ))
-        model.addMessage(Message(
-            from: ME,
-            to: "Tester",
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque finibus, metus id blandit tincidunt, ligula dolor convallis purus, eget efficitur arcu lectus non risus. Nunc dictum massa vel quam aliquet tincidunt.",
-            sent_at: Date(timeIntervalSince1970: 1)
-        ))
     }
 
     @IBAction func addContactPressed(_: Any) {
@@ -177,12 +163,7 @@ class ThreadVC: UIViewController, UITableViewDataSource {
         guard let text = messageTextView.text, !text.isEmpty else { return }
 
         // Send the message.
-        model.addMessage(Message(
-            from: ME,
-            to: contact,
-            text: text,
-            sent_at: Date()
-        ))
+        model.sendMessage(to: contact, text: text)
 
         // Reset the message input and send button.
         messageTextView.text = ""
