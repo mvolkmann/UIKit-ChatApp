@@ -10,114 +10,218 @@ import UIKit
 // MARK: ContactsVC -
 
 class ContactsVC: UIViewController, ModelDelegate {
-	@IBOutlet weak var tableView: UITableView!
-	var model: Model!
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		model = Model()
-		model.delegate = self
-		tableView.delegate = self
-		tableView.dataSource = self
-		
-		model.addContact(newContact: "Tester")
-		model.addMessage(Message(from: "Tester", to: ME, text: "Hello", sent_at: Date(timeIntervalSince1970: 0)))
-		model.addMessage(Message(from: ME, to: "Tester", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque finibus, metus id blandit tincidunt, ligula dolor convallis purus, eget efficitur arcu lectus non risus. Nunc dictum massa vel quam aliquet tincidunt.", sent_at: Date(timeIntervalSince1970: 1)))
-	}
-	
-	@IBAction func addContactPressed(_ sender: Any) {
-		let alert = UIAlertController(title: "Add New Contact", message: nil, preferredStyle: .alert)
-		alert.addTextField()
-		alert.addAction(.init(title: "Save", style: .default, handler: { action in
-			let contactName = alert.textFields![0].text ?? ""
-			if !contactName.isEmpty {
-				self.model.addContact(newContact: contactName)
-			}
-		}))
-		alert.addAction(.init(title: "Cancel", style: .destructive))
-		self.present(alert, animated: true)
-	}
-	
-	func onContactsChanged() {
-		tableView.reloadData()
-	}
+    @IBOutlet var tableView: UITableView!
+    var model: Model!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        model = Model()
+        model.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
+
+        model.addContact(newContact: "Tester")
+        model.addMessage(Message(
+            from: "Tester",
+            to: ME,
+            text: "Hello",
+            sent_at: Date(timeIntervalSince1970: 0)
+        ))
+        model.addMessage(Message(
+            from: ME,
+            to: "Tester",
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque finibus, metus id blandit tincidunt, ligula dolor convallis purus, eget efficitur arcu lectus non risus. Nunc dictum massa vel quam aliquet tincidunt.",
+            sent_at: Date(timeIntervalSince1970: 1)
+        ))
+    }
+
+    @IBAction func addContactPressed(_: Any) {
+        let alert = UIAlertController(
+            title: "Add New Contact",
+            message: nil,
+            preferredStyle: .alert
+        )
+        alert.addTextField()
+        alert.addAction(.init(title: "Save", style: .default, handler: { _ in
+            let contactName = alert.textFields![0].text ?? ""
+            if !contactName.isEmpty {
+                self.model.addContact(newContact: contactName)
+            }
+        }))
+        alert.addAction(.init(title: "Cancel", style: .destructive))
+        present(alert, animated: true)
+    }
+
+    func onContactsChanged() {
+        tableView.reloadData()
+    }
 }
 
 extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return model.getAllThreads().count
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "thread", for: indexPath)
-		// Listing everybody
-		cell.textLabel!.text = model.getAllThreads()[indexPath.row]
-		return cell
-	}
-	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let storyboard = UIStoryboard(name: "Main", bundle: nil)
-		let threadVC = storyboard.instantiateViewController(withIdentifier: "ThreadVC") as! ThreadVC
-		threadVC.model = model
-		threadVC.contact = model.getAllThreads()[indexPath.row]
-		navigationController!.pushViewController(threadVC, animated: true)
-	}
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
+        return model.getAllThreads().count
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "thread",
+            for: indexPath
+        )
+        // Listing everybody
+        cell.textLabel!.text = model.getAllThreads()[indexPath.row]
+        return cell
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let threadVC = storyboard
+            .instantiateViewController(withIdentifier: "ThreadVC") as! ThreadVC
+        threadVC.model = model
+        threadVC.contact = model.getAllThreads()[indexPath.row]
+        navigationController!.pushViewController(threadVC, animated: true)
+    }
 }
 
 // MARK: ThreadVC -
 
 class ThreadVC: UIViewController, UITableViewDataSource {
-	var model: Model!
-	var contact: String! // Model of the individual Thread Page
-	
-	@IBOutlet weak var tableView: UITableView!
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		tableView.dataSource = self
-		title = contact
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return model.getMessages(forContact: contact).count
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "message") as! MessageCell
-		let messages = model.getMessages(forContact: contact)
-		cell.configureView(messages[indexPath.row])
-		return cell
-	}
+    private let minimumInputHeight: CGFloat = 44 // RMV - 1 line
+    private let maximumInputHeight: CGFloat = 120 // RMV - 6 lines
+
+    var model: Model!
+    var contact: String! // Model of the individual Thread Page
+
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var messageTextView: UITextView! // RMV
+    @IBOutlet var sendButton: UIButton! // RMV
+    @IBOutlet var inputBarHeightConstraint: NSLayoutConstraint! // RMV
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.dataSource = self
+        title = contact
+
+        // RMV
+        messageTextView.delegate = self
+        messageTextView.layer.borderColor = UIColor.separator.cgColor
+        messageTextView.layer.borderWidth = 1
+        messageTextView.layer.cornerRadius = 6
+        messageTextView.textContainerInset = UIEdgeInsets(
+            top: 8,
+            left: 8,
+            bottom: 8,
+            right: 8
+        )
+
+        // RMV
+        sendButton.isEnabled = false
+        sendButton.setImage(
+            UIImage(systemName: "paperplane.fill"),
+            for: .normal
+        )
+    }
+
+    // RMV - Updates the message input height so it fits the entered text,
+    //      but not more than 6 lines.
+    private func updateInputHeight() {
+        let fittingSize = CGSize(
+            width: messageTextView.bounds.width,
+            height: .greatestFiniteMagnitude
+        )
+        let height = messageTextView.sizeThatFits(fittingSize).height
+        inputBarHeightConstraint.constant = min(
+            max(height, minimumInputHeight),
+            maximumInputHeight
+        )
+        messageTextView.isScrollEnabled = height > maximumInputHeight
+        view.layoutIfNeeded()
+    }
+
+    // RMV
+    @IBAction func sendButtonPressed(_: Any) {
+        guard let text = messageTextView.text, !text.isEmpty else { return }
+
+        // Send the message.
+        model.addMessage(Message(
+            from: ME,
+            to: contact,
+            text: text,
+            sent_at: Date()
+        ))
+
+        // Reset the message input and send button.
+        messageTextView.text = ""
+        sendButton.isEnabled = false
+        updateInputHeight() // resets to 1 line
+
+        // The table of messages doesn't update without this.
+        tableView.reloadData()
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
+        return model.getMessages(forContact: contact).count
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        let cell = tableView
+            .dequeueReusableCell(withIdentifier: "message") as! MessageCell
+        let messages = model.getMessages(forContact: contact)
+        cell.configureView(messages[indexPath.row])
+        return cell
+    }
+}
+
+// RMV
+extension ThreadVC: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        updateInputHeight()
+
+        // The send button is only enabled when text has been entered.
+        sendButton.isEnabled = !textView.text.isEmpty
+    }
 }
 
 class MessageCell: UITableViewCell {
+    @IBOutlet var messageView: UIView!
+    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var messageLabel: UILabel!
+    @IBOutlet var bubbleLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var bubbleTrailingConstraint: NSLayoutConstraint!
 
-	@IBOutlet weak var messageView: UIView!
-	@IBOutlet weak var timeLabel: UILabel!
-	@IBOutlet weak var messageLabel: UILabel!
-	@IBOutlet weak var bubbleLeadingConstraint: NSLayoutConstraint!
-	@IBOutlet weak var bubbleTrailingConstraint: NSLayoutConstraint!
-	
-	func configureView(_ message: Message) {
-		messageLabel.text = message.text
-		timeLabel.text = message.sent_at.formatted()
-		messageView.layer.cornerRadius = 10
-		messageView.layer.masksToBounds = true
-		let fromMe = message.isFromMe()
-		if fromMe {
-			timeLabel.textAlignment = .right
-			messageLabel.textColor = UIColor.white
-			messageView.backgroundColor = #colorLiteral(red: 0, green: 0.6618174911, blue: 0.9620569348, alpha: 1)
-			bubbleLeadingConstraint.constant = 60
-			bubbleTrailingConstraint.constant = -12
-		} else {
-			timeLabel.textAlignment = .left
-			messageLabel.textColor = UIColor.black
-			messageView.backgroundColor = #colorLiteral(red: 0.8371008039, green: 0.8586425781, blue: 0.8633332849, alpha: 1)
-			bubbleLeadingConstraint.constant = 12
-			bubbleTrailingConstraint.constant = -60
-		}
-		// change alignment of bubble
-	}
+    func configureView(_ message: Message) {
+        messageLabel.text = message.text
+        timeLabel.text = message.sent_at.formatted()
+        messageView.layer.cornerRadius = 10
+        messageView.layer.masksToBounds = true
+        let fromMe = message.isFromMe()
+        if fromMe {
+            timeLabel.textAlignment = .right
+            messageLabel.textColor = UIColor.white
+            messageView.backgroundColor = #colorLiteral(red: 0, green: 0.6618174911, blue: 0.9620569348, alpha: 1)
+            bubbleLeadingConstraint.constant = 60
+            bubbleTrailingConstraint.constant = -12
+        } else {
+            timeLabel.textAlignment = .left
+            messageLabel.textColor = UIColor.black
+            messageView.backgroundColor = #colorLiteral(red: 0.8371008039, green: 0.8586425781, blue: 0.8633332849, alpha: 1)
+            bubbleLeadingConstraint.constant = 12
+            bubbleTrailingConstraint.constant = -60
+        }
+        // change alignment of bubble
+    }
 }

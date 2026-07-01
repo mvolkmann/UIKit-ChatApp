@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Nip-SU-9cC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Nip-SU-9cC">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,7 +13,7 @@
             <objects>
                 <navigationController id="Nip-SU-9cC" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jif-Qq-JAR">
-                        <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -33,18 +33,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="B6e-PQ-UrA">
-                                <rect key="frame" x="0.0" y="162" width="393" height="622"/>
+                                <rect key="frame" x="0.0" y="172" width="393" height="612"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="thread" textLabel="5eZ-Pp-aRa" style="IBUITableViewCellStyleDefault" id="kqH-HG-rHJ">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="50" width="393" height="51"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kqH-HG-rHJ" id="h6u-He-YM1">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5eZ-Pp-aRa">
-                                                    <rect key="frame" x="20" y="0.0" width="353" height="43.666667938232422"/>
+                                                    <rect key="frame" x="20" y="0.0" width="353" height="51"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                                     <nil key="textColor"/>
@@ -89,7 +89,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1ng-ze-Iwx">
-                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="614"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="message" rowHeight="270" id="mbX-tV-ATb" customClass="MessageCell" customModule="ChatApp" customModuleProvider="target">
@@ -115,8 +115,8 @@
                                                             </subviews>
                                                             <color key="backgroundColor" systemColor="systemBlueColor"/>
                                                             <constraints>
-                                                                <constraint firstItem="uom-84-XYw" firstAttribute="bottom" secondItem="9kl-hd-WxP" secondAttribute="bottom" constant="1" id="9u3-Kd-g1g"/>
-                                                                <constraint firstItem="uom-84-XYw" firstAttribute="top" secondItem="9kl-hd-WxP" secondAttribute="top" constant="1" id="CgP-lY-BbS"/>
+                                                                <constraint firstItem="uom-84-XYw" firstAttribute="bottom" secondItem="9kl-hd-WxP" secondAttribute="bottom" constant="-8" id="9u3-Kd-g1g"/>
+                                                                <constraint firstItem="uom-84-XYw" firstAttribute="top" secondItem="9kl-hd-WxP" secondAttribute="top" constant="8" id="CgP-lY-BbS"/>
                                                                 <constraint firstItem="uom-84-XYw" firstAttribute="leading" secondItem="9kl-hd-WxP" secondAttribute="leading" constant="12" id="EYh-ck-acW"/>
                                                                 <constraint firstItem="uom-84-XYw" firstAttribute="trailing" secondItem="9kl-hd-WxP" secondAttribute="trailing" constant="-12" id="Qpc-sQ-EOv"/>
                                                             </constraints>
@@ -147,6 +147,28 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPC-d8-qMT">
+                                <rect key="frame" x="16" y="740" width="361" height="44"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2Yb-um-OgQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="337" height="44"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dpk-t4-YfU">
+                                        <rect key="frame" x="337" y="0.0" width="24" height="44"/>
+                                        <state key="normal" title="Send"/>
+                                        <buttonConfiguration key="configuration" style="plain"/>
+                                        <connections>
+                                            <action selector="sendButtonPressed:" destination="H8M-dX-ctX" eventType="touchUpInside" id="HfF-mR-Sn8"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="gSE-Tx-PzQ"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="g5o-2g-dBZ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -154,10 +176,16 @@
                             <constraint firstItem="1ng-ze-Iwx" firstAttribute="leading" secondItem="g5o-2g-dBZ" secondAttribute="leading" id="1M9-24-Zc5"/>
                             <constraint firstItem="g5o-2g-dBZ" firstAttribute="trailing" secondItem="1ng-ze-Iwx" secondAttribute="trailing" id="1jV-1d-lp6"/>
                             <constraint firstItem="1ng-ze-Iwx" firstAttribute="top" secondItem="g5o-2g-dBZ" secondAttribute="top" id="3Tg-Zp-eLc"/>
-                            <constraint firstItem="g5o-2g-dBZ" firstAttribute="bottom" secondItem="1ng-ze-Iwx" secondAttribute="bottom" id="SbH-Vv-oq2"/>
+                            <constraint firstItem="CPC-d8-qMT" firstAttribute="top" secondItem="1ng-ze-Iwx" secondAttribute="bottom" constant="8" id="EJR-zB-IW4"/>
+                            <constraint firstItem="CPC-d8-qMT" firstAttribute="leading" secondItem="g5o-2g-dBZ" secondAttribute="leading" constant="16" id="S5L-Ee-Vim"/>
+                            <constraint firstItem="g5o-2g-dBZ" firstAttribute="bottom" secondItem="CPC-d8-qMT" secondAttribute="bottom" id="SbH-Vv-oq2"/>
+                            <constraint firstItem="g5o-2g-dBZ" firstAttribute="trailing" secondItem="CPC-d8-qMT" secondAttribute="trailing" constant="16" id="zxR-Uq-hEL"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="inputBarHeightConstraint" destination="gSE-Tx-PzQ" id="zLH-AC-vIi"/>
+                        <outlet property="messageTextView" destination="2Yb-um-OgQ" id="MlG-Cr-4lA"/>
+                        <outlet property="sendButton" destination="dpk-t4-YfU" id="jqb-HW-C7V"/>
                         <outlet property="tableView" destination="1ng-ze-Iwx" id="V1C-Hs-Aoo"/>
                     </connections>
                 </viewController>
@@ -171,7 +199,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.53333333333333333" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

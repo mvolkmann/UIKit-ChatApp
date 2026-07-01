@@ -3,46 +3,45 @@ import Foundation
 let ME = "Me"
 
 struct Message {
-	let from: String
-	let to: String
-	let text: String
-	let sent_at: Foundation.Date
-	
-	func isFromMe() -> Bool { from == ME }
+    let from: String
+    let to: String
+    let text: String
+    let sent_at: Foundation.Date
+
+    func isFromMe() -> Bool { from == ME }
 }
 
 protocol ModelDelegate {
-	func onContactsChanged()
+    func onContactsChanged()
 }
 
 class Model {
-	var delegate: ModelDelegate?
-	// The names of our contacts.
-	private var contacts: [String]
-	private var threads: [String: [Message]]
-	
-	init(contacts: [String] = [], threads: [String : [Message]] = [:]) {
-		self.contacts = contacts
-		self.threads = threads
-	}
-	
-	func getAllThreads() -> [String] {
-		return self.contacts
-	}
-	
-	func addContact(newContact: String) {
-		contacts.append(newContact)
-		threads[newContact] = [Message]()
-		delegate?.onContactsChanged()
-	}
-	
-	func addMessage(_ message: Message) {
-		let contact = message.from == ME ? message.to : message.from
-		threads[contact]?.append(message)
-	}
-	
-	func getMessages(forContact: String) -> [Message] {
-		return threads[forContact] ?? []
-	}
-	
+    var delegate: ModelDelegate?
+    // The names of our contacts.
+    private var contacts: [String]
+    private var threads: [String: [Message]]
+
+    init(contacts: [String] = [], threads: [String: [Message]] = [:]) {
+        self.contacts = contacts
+        self.threads = threads
+    }
+
+    func getAllThreads() -> [String] {
+        return contacts
+    }
+
+    func addContact(newContact: String) {
+        contacts.append(newContact)
+        threads[newContact] = [Message]()
+        delegate?.onContactsChanged()
+    }
+
+    func addMessage(_ message: Message) {
+        let contact = message.from == ME ? message.to : message.from
+        threads[contact]?.append(message)
+    }
+
+    func getMessages(forContact: String) -> [Message] {
+        return threads[forContact] ?? []
+    }
 }
