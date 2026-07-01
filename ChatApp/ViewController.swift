@@ -96,6 +96,8 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
 class ThreadVC: UIViewController, UITableViewDataSource {
     private let minimumInputHeight: CGFloat = 44 // RMV - 1 line
     private let maximumInputHeight: CGFloat = 120 // RMV - 6 lines
+    private let messageFont = UIFont.systemFont(ofSize: 17)
+    private let timestampFont = UIFont.systemFont(ofSize: 14)
 
     var model: Model!
     var contact: String! // Model of the individual Thread Page
@@ -109,6 +111,11 @@ class ThreadVC: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         tableView.dataSource = self
         title = contact
+
+        // RMV
+        tableView.delegate = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 80
 
         // RMV
         messageTextView.delegate = self
@@ -186,6 +193,44 @@ class ThreadVC: UIViewController, UITableViewDataSource {
     }
 }
 
+// RMV - Calculates each message row height from its text so
+// existing messages keep their height when new messages are added.
+extension ThreadVC: UITableViewDelegate {
+    // Computes the required height for a given table row
+    // that contains a message bubble.
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        let message = model.getMessages(forContact: contact)[indexPath.row]
+        let horizontalMargins: CGFloat = 72
+        let bubbleHorizontalPadding: CGFloat = 24
+        let labelWidth = tableView.bounds
+            .width - horizontalMargins - bubbleHorizontalPadding
+        let labelSize = CGSize(
+            width: labelWidth,
+            height: .greatestFiniteMagnitude
+        )
+        let textHeight = (message.text as NSString)
+            .boundingRect(
+                with: labelSize,
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: [.font: messageFont],
+                context: nil
+            )
+            .height
+
+        let bubbleVerticalPadding: CGFloat = 16
+        let cellBottomPadding: CGFloat = 12
+        return ceil(
+            textHeight +
+                bubbleVerticalPadding +
+                timestampFont.lineHeight +
+                cellBottomPadding
+        )
+    }
+}
+
 // RMV
 extension ThreadVC: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
@@ -202,6 +247,12 @@ class MessageCell: UITableViewCell {
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet var bubbleLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var bubbleTrailingConstraint: NSLayoutConstraint!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        messageLabel.numberOfLines = 0
+        messageLabel.lineBreakMode = .byWordWrapping
+    }
 
     func configureView(_ message: Message) {
         messageLabel.text = message.text
