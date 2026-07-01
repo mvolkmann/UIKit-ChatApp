@@ -116,6 +116,8 @@ class ThreadVC: UIViewController, UITableViewDataSource {
         tableView.delegate = self
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 80
+        tableView.isScrollEnabled = true
+        tableView.alwaysBounceVertical = true
 
         // RMV
         messageTextView.delegate = self
@@ -135,6 +137,23 @@ class ThreadVC: UIViewController, UITableViewDataSource {
             UIImage(systemName: "paperplane.fill"),
             for: .normal
         )
+    }
+
+    // RMV - Scrolls the TableView to the bottom
+    //       when this screen is initially displayed.
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollToBottom(animated: false)
+    }
+
+    // RMV - Scrolls TableView so last message is visible.
+    private func scrollToBottom(animated: Bool) {
+        let messageCount = model.getMessages(forContact: contact).count
+        guard messageCount > 0 else { return }
+
+        tableView.layoutIfNeeded()
+        let indexPath = IndexPath(row: messageCount - 1, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: animated)
     }
 
     // RMV - Updates the message input height so it fits the entered text,
@@ -172,6 +191,7 @@ class ThreadVC: UIViewController, UITableViewDataSource {
 
         // The table of messages doesn't update without this.
         tableView.reloadData()
+        scrollToBottom(animated: true)
     }
 
     func tableView(
