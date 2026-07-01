@@ -99,7 +99,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="270"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="OcN-EK-gsd">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OcN-EK-gsd">
                                                     <rect key="frame" x="60" y="0.0" width="321" height="258"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9kl-hd-WxP">
@@ -128,7 +128,16 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                </stackView>
+                                                    <constraints>
+                                                        <constraint firstItem="9kl-hd-WxP" firstAttribute="top" secondItem="OcN-EK-gsd" secondAttribute="top" id="0Zx-1P-Jta"/>
+                                                        <constraint firstItem="9kl-hd-WxP" firstAttribute="leading" secondItem="OcN-EK-gsd" secondAttribute="leading" id="2rY-Mg-IWt"/>
+                                                        <constraint firstItem="OcN-EK-gsd" firstAttribute="trailing" secondItem="9kl-hd-WxP" secondAttribute="trailing" id="Abl-Ap-Rrw"/>
+                                                        <constraint firstItem="ltP-xf-a5I" firstAttribute="top" secondItem="9kl-hd-WxP" secondAttribute="bottom" id="CKn-cj-QRN"/>
+                                                        <constraint firstItem="ltP-xf-a5I" firstAttribute="leading" secondItem="OcN-EK-gsd" secondAttribute="leading" id="GHd-1n-kWA"/>
+                                                        <constraint firstItem="OcN-EK-gsd" firstAttribute="bottom" secondItem="ltP-xf-a5I" secondAttribute="bottom" id="OFd-za-TYe"/>
+                                                        <constraint firstItem="OcN-EK-gsd" firstAttribute="trailing" secondItem="ltP-xf-a5I" secondAttribute="trailing" id="xOb-cK-abk"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="OcN-EK-gsd" firstAttribute="bottom" secondItem="ZCc-5p-kEU" secondAttribute="bottom" constant="-12" id="DJR-to-mkL"/>
@@ -183,6 +192,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="inputBarBottomConstraint" destination="SbH-Vv-oq2" id="Isl-tW-sfs"/>
                         <outlet property="inputBarHeightConstraint" destination="gSE-Tx-PzQ" id="zLH-AC-vIi"/>
                         <outlet property="messageTextView" destination="2Yb-um-OgQ" id="MlG-Cr-4lA"/>
                         <outlet property="sendButton" destination="dpk-t4-YfU" id="jqb-HW-C7V"/>

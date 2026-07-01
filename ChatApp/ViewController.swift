@@ -92,6 +92,7 @@ class ThreadVC: UIViewController, UITableViewDataSource {
     @IBOutlet var messageTextView: UITextView! // RMV
     @IBOutlet var sendButton: UIButton! // RMV
     @IBOutlet var inputBarHeightConstraint: NSLayoutConstraint! // RMV
+    @IBOutlet var inputBarBottomConstraint: NSLayoutConstraint! // RMV
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,6 +124,20 @@ class ThreadVC: UIViewController, UITableViewDataSource {
             UIImage(systemName: "paperplane.fill"),
             for: .normal
         )
+
+        // RMV - This enables the stack containing the message input
+        //       and send button to move above the software keyboard.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardFrameChanged(_:)),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+    }
+
+    // RMV
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // RMV - Scrolls the TableView to the bottom
@@ -140,6 +155,28 @@ class ThreadVC: UIViewController, UITableViewDataSource {
         tableView.layoutIfNeeded()
         let indexPath = IndexPath(row: messageCount - 1, section: 0)
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: animated)
+    }
+
+    // RMV - This moves the stack containing the message input
+    //       and send button to above the software keyboard.
+    @objc private func keyboardFrameChanged(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame =
+              userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+        else {
+            return
+        }
+
+        let convertedKeyboardFrame = view.convert(keyboardFrame, from: nil)
+        let distance =
+            view.bounds.maxY -
+            convertedKeyboardFrame.minY -
+            view.safeAreaInsets.bottom
+        let keyboardOverlap = max(0, distance)
+        inputBarBottomConstraint.constant = keyboardOverlap
+
+        view.layoutIfNeeded()
+        scrollToBottom(animated: false)
     }
 
     // RMV - Updates the message input height so it fits the entered text,
